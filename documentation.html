@@ -1,0 +1,350 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"></head><body>
+<title>Bulk Attach Documentation</title>
+<style>
+  :root {
+    --paper: #fbfaf7;
+    --paper-raised: #ffffff;
+    --ink: #1b2430;
+    --ink-soft: #5b6472;
+    --line: #e1e4e8;
+    --accent: #0c66e4;
+    --accent-soft: #e9f2ff;
+    --good: #216e4e;
+    --good-soft: #dcfff1;
+    --warn: #a54800;
+    --warn-soft: #fff7d6;
+  }
+  :root:not([data-theme="light"]) {
+    @media (prefers-color-scheme: dark) {
+      --paper: #14181f; --paper-raised: #1a1f28; --ink: #e6e9ee; --ink-soft: #9aa4b2;
+      --line: #2a303c; --accent: #5b9dff; --accent-soft: #17263d;
+      --good: #6ee7b7; --good-soft: #0f2e24; --warn: #f0b775; --warn-soft: #2e2510;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #14181f; --paper-raised: #1a1f28; --ink: #e6e9ee; --ink-soft: #9aa4b2;
+    --line: #2a303c; --accent: #5b9dff; --accent-soft: #17263d;
+    --good: #6ee7b7; --good-soft: #0f2e24; --warn: #f0b775; --warn-soft: #2e2510;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink);
+    font-family: "Source Sans 3", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 1180px; margin: 0 auto; padding: 56px 28px 96px;
+    display: grid; grid-template-columns: 220px minmax(0, 700px); gap: 64px;
+  }
+  @media (max-width: 880px) {
+    .wrap { grid-template-columns: 1fr; gap: 32px; padding: 32px 20px 72px; }
+    nav.toc { display: none; }
+  }
+
+  header.masthead {
+    grid-column: 1 / -1; display: flex; align-items: baseline; justify-content: space-between;
+    gap: 16px; flex-wrap: wrap; padding-bottom: 28px; margin-bottom: 8px; border-bottom: 1px solid var(--line);
+  }
+  .brand { display: flex; align-items: baseline; gap: 10px; }
+  .brand .mark { font-family: "Fraunces", Georgia, serif; font-weight: 600; font-size: 20px; }
+  .brand .mark .dot { color: var(--accent); }
+  .brand .sub { color: var(--ink-soft); font-size: 13px; }
+  .meta { font-size: 13px; color: var(--ink-soft); text-align: right; line-height: 1.5; }
+  .meta strong { color: var(--ink); font-weight: 600; }
+
+  nav.toc { position: sticky; top: 40px; align-self: start; font-size: 13.5px; }
+  nav.toc .toc-label {
+    text-transform: uppercase; letter-spacing: 0.08em; font-size: 11px;
+    color: var(--ink-soft); margin-bottom: 12px; font-weight: 600;
+  }
+  nav.toc ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 9px; counter-reset: toc; }
+  nav.toc li { counter-increment: toc; }
+  nav.toc a { color: var(--ink-soft); text-decoration: none; display: flex; gap: 8px; }
+  nav.toc a:hover { color: var(--accent); }
+  nav.toc a::before {
+    content: counter(toc); font-variant-numeric: tabular-nums;
+    color: var(--line); font-weight: 600; min-width: 1.2em;
+  }
+  nav.toc a:hover::before { color: var(--accent); }
+
+  main { min-width: 0; }
+
+  .lede {
+    font-family: "Fraunces", Georgia, serif; font-size: 24px; font-weight: 500;
+    line-height: 1.45; text-wrap: balance; color: var(--ink); margin: 0 0 28px;
+  }
+  .lede em { color: var(--accent); font-style: normal; }
+
+  .flow-figure {
+    display: flex; align-items: center; flex-wrap: wrap; gap: 10px;
+    background: var(--paper-raised); border: 1px solid var(--line); border-radius: 10px;
+    padding: 18px 20px; margin: 0 0 40px; font-size: 13.5px;
+    font-family: "JetBrains Mono", ui-monospace, Consolas, monospace;
+  }
+  .flow-figure .node { padding: 5px 10px; border-radius: 6px; background: var(--accent-soft); color: var(--accent); white-space: nowrap; }
+  .flow-figure .arrow { color: var(--ink-soft); }
+
+  section { margin-bottom: 44px; scroll-margin-top: 32px; }
+  section h2 {
+    font-family: "Fraunces", Georgia, serif; font-size: 19px; font-weight: 600; margin: 0 0 14px;
+    display: flex; align-items: baseline; gap: 10px;
+  }
+  section h2 .num { font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 13px; color: var(--accent); font-weight: 500; }
+  section h3 { font-size: 15.5px; font-weight: 600; margin: 24px 0 10px; color: var(--ink); }
+  section p, section li { font-size: 15.5px; line-height: 1.7; color: var(--ink); max-width: 66ch; }
+  section p + p { margin-top: 12px; }
+  section ul, section ol { margin: 10px 0; padding-left: 0; list-style: none; }
+  section ul li { position: relative; padding-left: 20px; margin-bottom: 8px; }
+  section ul li::before {
+    content: ""; position: absolute; left: 0; top: 9px; width: 6px; height: 6px;
+    border-radius: 50%; background: var(--accent);
+  }
+  section ol { counter-reset: steps; }
+  section ol li { position: relative; padding-left: 28px; margin-bottom: 10px; counter-increment: steps; }
+  section ol li::before {
+    content: counter(steps); position: absolute; left: 0; top: 0;
+    font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 12px; font-weight: 600;
+    color: var(--accent); background: var(--accent-soft); width: 18px; height: 18px;
+    border-radius: 4px; display: flex; align-items: center; justify-content: center;
+  }
+
+  code {
+    font-family: "JetBrains Mono", ui-monospace, Consolas, monospace;
+    background: var(--accent-soft); color: var(--accent); padding: 1px 6px; border-radius: 4px; font-size: 0.9em;
+  }
+
+  .card {
+    background: var(--paper-raised); border: 1px solid var(--line); border-radius: 10px;
+    padding: 18px 20px; margin: 16px 0;
+  }
+  .card h3 { margin-top: 0; }
+  .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+  @media (max-width: 620px) { .card-grid { grid-template-columns: 1fr; } }
+
+  .status-pill {
+    display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 600;
+    padding: 3px 10px; border-radius: 20px; margin: 2px 6px 2px 0;
+  }
+  .status-pill.ready { background: var(--good-soft); color: var(--good); }
+  .status-pill.warn { background: var(--warn-soft); color: var(--warn); }
+
+  table.ref-table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 14px; }
+  table.ref-table th, table.ref-table td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  table.ref-table th { color: var(--ink-soft); font-weight: 600; font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.06em; }
+
+  .example-name { font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 13.5px; }
+  .example-arrow { color: var(--accent); margin: 0 6px; }
+
+  footer {
+    grid-column: 1 / -1; margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--line);
+    font-size: 13px; color: var(--ink-soft); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+</style>
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Source+Sans+3:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
+
+<div class="wrap">
+  <header class="masthead">
+    <div class="brand">
+      <span class="mark">Bulk Attach<span class="dot">.</span></span>
+      <span class="sub">for Jira</span>
+    </div>
+    <div class="meta">
+      <div><strong>Documentation</strong></div>
+      <div>v0.9.0-beta</div>
+    </div>
+  </header>
+
+  <nav class="toc" aria-label="Table of contents">
+    <div class="toc-label">On this page</div>
+    <ol>
+      <li><a href="#overview">Overview</a></li>
+      <li><a href="#permissions">Permissions</a></li>
+      <li><a href="#browse">Browse &amp; Attach</a></li>
+      <li><a href="#mapping">Smart Mapping</a></li>
+      <li><a href="#preflight">Preflight validation</a></li>
+      <li><a href="#upload">Upload &amp; progress</a></li>
+      <li><a href="#results">Results &amp; Undo</a></li>
+      <li><a href="#limits">Batch limits</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#support">Support</a></li>
+    </ol>
+  </nav>
+
+  <main>
+    <p class="lede">
+      <em>Stop attaching files to Jira issues one by one.</em> Bulk Attach
+      finds or maps the right issues for a batch of local files, shows you
+      exactly what will happen before anything uploads, then does it safely.
+    </p>
+
+    <div class="flow-figure">
+      <span class="node">Select files</span>
+      <span class="arrow">&rarr;</span>
+      <span class="node">Find or map issues</span>
+      <span class="arrow">&rarr;</span>
+      <span class="node">Review</span>
+      <span class="arrow">&rarr;</span>
+      <span class="node">Upload</span>
+    </div>
+
+    <section id="overview">
+      <h2><span class="num">01</span>Overview</h2>
+      <p>Bulk Attach has two workflows, reached from tabs at the top of the app:</p>
+      <div class="card-grid">
+        <div class="card">
+          <h3>Browse &amp; Attach</h3>
+          <p style="margin:0">Search and filter your Jira issues, tick the
+          ones you want, drop in your files. Best when you already know which
+          issues you're targeting.</p>
+        </div>
+        <div class="card">
+          <h3>Smart Mapping</h3>
+          <p style="margin:0">Select many files first, then let the app work
+          out which issue each one belongs to &mdash; by filename, by CSV, or
+          assigned manually. Best for bulk migrations.</p>
+        </div>
+      </div>
+      <p>Every attachment upload goes straight from your browser to your own
+      Jira site &mdash; see the <a href="./privacy-policy.html" target="_blank" rel="noopener">Privacy
+      Policy</a> for the full data-flow explanation.</p>
+    </section>
+
+    <section id="permissions">
+      <h2><span class="num">02</span>Permissions</h2>
+      <p>Bulk Attach acts as the currently signed-in Jira user &mdash; it can
+      only do what you could already do by hand. To use it on a project, you need:</p>
+      <ul>
+        <li><strong>Browse Projects</strong> &mdash; without it, an issue looks like it doesn't exist (a <code>404</code>), not like a permission problem</li>
+        <li><strong>Create Attachments</strong> &mdash; without it, uploads to that project fail with a clear permission message</li>
+      </ul>
+      <p>Attachments must also be enabled site-wide by your Jira admin
+      (Jira Settings &rarr; Attachments).</p>
+    </section>
+
+    <section id="browse">
+      <h2><span class="num">03</span>Browse &amp; Attach</h2>
+      <ol>
+        <li>Drop in or browse for your local files on the left.</li>
+        <li>On the right, filter by project, status, issue type, assignee, or updated date &mdash; or switch to Advanced/JQL for a direct query.</li>
+        <li>Tick the issues you want. Your selection persists across searches and page changes, shown in a running <strong>Selected issues</strong> tray with individual remove buttons.</li>
+        <li>The app shows the math before you commit: <code>N files &times; M issues = N&times;M attachment operations</code>.</li>
+        <li>Click Review, check the preflight table, then Upload.</li>
+      </ol>
+      <p>Every selected file is attached to every ticked issue &mdash; that
+      single rule covers both "many files to one issue" and "one file to many
+      issues."</p>
+      <p>Click <strong>Attachments</strong> next to any issue row to see its
+      existing attachments, loaded only when you expand it.</p>
+    </section>
+
+    <section id="mapping">
+      <h2><span class="num">04</span>Smart Mapping</h2>
+
+      <h3>From filename</h3>
+      <p>Reads a Jira issue key straight out of each filename:</p>
+      <table class="ref-table">
+        <tr><td class="example-name">FIN-123-invoice.pdf</td><td class="example-arrow">&rarr;</td><td><span class="status-pill ready">Ready</span> FIN-123</td></tr>
+        <tr><td class="example-name">FIN-124_contract.docx</td><td class="example-arrow">&rarr;</td><td><span class="status-pill ready">Ready</span> FIN-124</td></tr>
+        <tr><td class="example-name">unknown.pdf</td><td class="example-arrow">&rarr;</td><td><span class="status-pill warn">Unmatched</span> no key detected</td></tr>
+      </table>
+      <p>Project keys of any length are recognized &mdash; not just three
+      characters. Unmatched files are listed, never silently uploaded.</p>
+
+      <h3>From CSV</h3>
+      <p>Upload a mapping file with <code>issue_key</code> and
+      <code>filename</code> columns:</p>
+      <div class="card">
+        <code>issue_key,filename<br>FIN-102,invoice-8841.pdf<br>FIN-103,invoice-8842.pdf</code>
+      </div>
+      <p>Parsed entirely in your browser &mdash; the CSV itself is never
+      uploaded anywhere. Listing the same file on more than one line sends it
+      to more than one issue.</p>
+
+      <h3>Manual</h3>
+      <p>Search and assign issues per file, by key or by summary text. A
+      single file can carry any number of assigned issues.</p>
+    </section>
+
+    <section id="preflight">
+      <h2><span class="num">05</span>Preflight validation</h2>
+      <p>Nothing uploads until you click Upload, and preflight checks every
+      row against live Jira first:</p>
+      <table class="ref-table">
+        <thead><tr><th>Status</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td>Ready</td><td>Passed every check &mdash; will be uploaded</td></tr>
+          <tr><td>Unmatched</td><td>No issue key could be determined</td></tr>
+          <tr><td>Invalid issue</td><td>The key doesn't exist, or you can't browse it</td></tr>
+          <tr><td>Too large</td><td>Exceeds this site's configured attachment size limit</td></tr>
+          <tr><td>Duplicate</td><td>Same file already targets this issue elsewhere in the batch &mdash; blocked unless you click Allow on that row</td></tr>
+        </tbody>
+      </table>
+      <p>You can edit an issue key, remove a row, or re-validate the whole
+      batch before uploading.</p>
+    </section>
+
+    <section id="upload">
+      <h2><span class="num">06</span>Upload &amp; progress</h2>
+      <p>Uploads run through a bounded queue &mdash; a handful at a time, never
+      all at once. Live progress shows uploaded / pending / failed counts and
+      what's currently in flight. One failed upload never stops the rest of
+      the batch. Rate limits and temporary server errors are retried
+      automatically with backoff; permission errors are not retried, since
+      they won't succeed on a second try.</p>
+    </section>
+
+    <section id="results">
+      <h2><span class="num">07</span>Results &amp; Undo</h2>
+      <p>When the batch finishes, you get a summary (successful / failed /
+      skipped), a <strong>Download results CSV</strong> button, and if
+      anything failed, <strong>Retry failed</strong> &mdash; which re-sends
+      only the failed rows, never re-uploading anything that already succeeded.</p>
+      <p><strong>Undo This Batch</strong> removes exactly the attachments that
+      batch just created, identified by their exact Jira attachment ID &mdash;
+      never by filename or issue match. It requires an explicit confirmation
+      ("I understand this cannot be undone") before anything is deleted, and
+      never touches attachments that existed before the batch ran.</p>
+    </section>
+
+    <section id="limits">
+      <h2><span class="num">08</span>Batch limits</h2>
+      <p>Two safeguards against accidental mass operations:</p>
+      <ul>
+        <li>At <strong>100 or more</strong> operations, an explicit confirmation checkbox appears and Upload stays disabled until you tick it.</li>
+        <li>At <strong>more than 500</strong> operations, the batch is blocked outright with a message asking you to split it into smaller batches.</li>
+      </ul>
+    </section>
+
+    <section id="faq">
+      <h2><span class="num">09</span>FAQ</h2>
+      <h3>Does this delete or manage existing attachments?</h3>
+      <p>No, except for Undo This Batch, which only removes what the current
+      batch itself just uploaded. Bulk Attach does not offer general
+      attachment browsing, deletion, or download &mdash; it's focused on
+      uploading.</p>
+      <h3>Can I attach the same file to several issues?</h3>
+      <p>Yes &mdash; that's one of the two core shapes the app is built
+      around (see Browse &amp; Attach above, or Manual mapping for
+      per-file control).</p>
+      <h3>What file types are supported?</h3>
+      <p>Anything your Jira site's attachment settings allow. The app doesn't
+      add its own restriction.</p>
+    </section>
+
+    <section id="support">
+      <h2><span class="num">10</span>Support</h2>
+      <p>Questions or issues: <a href="mailto:abuzarmirza918@gmail.com">abuzarmirza918@gmail.com</a>.</p>
+    </section>
+  </main>
+
+  <footer>
+    <span>Abuzar Arif Dev &middot; Bulk Attach for Jira</span>
+    <span><a href="mailto:abuzarmirza918@gmail.com">abuzarmirza918@gmail.com</a></span>
+  </footer>
+</div>
+</body></html>

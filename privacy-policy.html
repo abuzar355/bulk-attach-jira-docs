@@ -1,0 +1,422 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"></head><body>
+<title>Bulk Attach Privacy Policy</title>
+<style>
+  :root {
+    --paper: #fbfaf7;
+    --paper-raised: #ffffff;
+    --ink: #1b2430;
+    --ink-soft: #5b6472;
+    --line: #e1e4e8;
+    --accent: #0c66e4;
+    --accent-soft: #e9f2ff;
+    --good: #216e4e;
+    --good-soft: #dcfff1;
+  }
+  :root:not([data-theme="light"]) {
+    @media (prefers-color-scheme: dark) {
+      --paper: #14181f;
+      --paper-raised: #1a1f28;
+      --ink: #e6e9ee;
+      --ink-soft: #9aa4b2;
+      --line: #2a303c;
+      --accent: #5b9dff;
+      --accent-soft: #17263d;
+      --good: #6ee7b7;
+      --good-soft: #0f2e24;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #14181f;
+    --paper-raised: #1a1f28;
+    --ink: #e6e9ee;
+    --ink-soft: #9aa4b2;
+    --line: #2a303c;
+    --accent: #5b9dff;
+    --accent-soft: #17263d;
+    --good: #6ee7b7;
+    --good-soft: #0f2e24;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Source Sans 3", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 56px 28px 96px;
+    display: grid;
+    grid-template-columns: 220px minmax(0, 700px);
+    gap: 64px;
+  }
+  @media (max-width: 880px) {
+    .wrap { grid-template-columns: 1fr; gap: 32px; padding: 32px 20px 72px; }
+    nav.toc { display: none; }
+  }
+
+  header.masthead {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    padding-bottom: 28px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid var(--line);
+  }
+  .brand {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+  .brand .mark {
+    font-family: "Fraunces", Georgia, serif;
+    font-weight: 600;
+    font-size: 20px;
+  }
+  .brand .mark .dot { color: var(--accent); }
+  .brand .sub { color: var(--ink-soft); font-size: 13px; }
+  .meta {
+    font-size: 13px;
+    color: var(--ink-soft);
+    text-align: right;
+    line-height: 1.5;
+  }
+  .meta strong { color: var(--ink); font-weight: 600; }
+
+  nav.toc {
+    position: sticky;
+    top: 40px;
+    align-self: start;
+    font-size: 13.5px;
+  }
+  nav.toc .toc-label {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 11px;
+    color: var(--ink-soft);
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+  nav.toc ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    counter-reset: toc;
+  }
+  nav.toc li { counter-increment: toc; }
+  nav.toc a {
+    color: var(--ink-soft);
+    text-decoration: none;
+    display: flex;
+    gap: 8px;
+  }
+  nav.toc a:hover { color: var(--accent); }
+  nav.toc a::before {
+    content: counter(toc);
+    font-variant-numeric: tabular-nums;
+    color: var(--line);
+    font-weight: 600;
+    min-width: 1.2em;
+  }
+  nav.toc a:hover::before { color: var(--accent); }
+
+  main { min-width: 0; }
+
+  .lede {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 1.45;
+    text-wrap: balance;
+    color: var(--ink);
+    margin: 0 0 36px;
+  }
+  .lede em { color: var(--accent); font-style: normal; }
+
+  .flow-figure {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 18px 20px;
+    margin: 0 0 40px;
+    font-size: 13.5px;
+    font-family: "JetBrains Mono", ui-monospace, Consolas, monospace;
+  }
+  .flow-figure .node {
+    padding: 5px 10px;
+    border-radius: 6px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    white-space: nowrap;
+  }
+  .flow-figure .node.you { background: var(--good-soft); color: var(--good); }
+  .flow-figure .arrow { color: var(--ink-soft); }
+
+  section { margin-bottom: 40px; scroll-margin-top: 32px; }
+  section h2 {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 19px;
+    font-weight: 600;
+    margin: 0 0 14px;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+  section h2 .num {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 13px;
+    color: var(--accent);
+    font-weight: 500;
+  }
+  section p, section li {
+    font-size: 15.5px;
+    line-height: 1.7;
+    color: var(--ink);
+    max-width: 66ch;
+  }
+  section p + p { margin-top: 12px; }
+  section ul { margin: 10px 0; padding-left: 0; list-style: none; }
+  section ul li {
+    position: relative;
+    padding-left: 20px;
+    margin-bottom: 8px;
+  }
+  section ul li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 9px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  code {
+    font-family: "JetBrains Mono", ui-monospace, Consolas, monospace;
+    background: var(--accent-soft);
+    color: var(--accent);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 0.9em;
+  }
+
+  table.scope-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+    font-size: 14px;
+  }
+  table.scope-table th, table.scope-table td {
+    text-align: left;
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  table.scope-table th {
+    color: var(--ink-soft);
+    font-weight: 600;
+    font-size: 11.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  table.scope-table code { white-space: nowrap; }
+
+  .not-list {
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--accent);
+    border-radius: 8px;
+    padding: 18px 20px;
+  }
+  .not-list p:first-child { margin-top: 0; font-weight: 600; }
+
+  footer {
+    grid-column: 1 / -1;
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    font-size: 13px;
+    color: var(--ink-soft);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+</style>
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Source+Sans+3:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
+
+<div class="wrap">
+  <header class="masthead">
+    <div class="brand">
+      <span class="mark">Bulk Attach<span class="dot">.</span></span>
+      <span class="sub">for Jira</span>
+    </div>
+    <div class="meta">
+      <div><strong>Privacy Policy</strong></div>
+      <div>Effective 2026-08-27 &middot; v0.9.0-beta</div>
+    </div>
+  </header>
+
+  <nav class="toc" aria-label="Table of contents">
+    <div class="toc-label">On this page</div>
+    <ol>
+      <li><a href="#flow">Where your files go</a></li>
+      <li><a href="#collect">What we collect</a></li>
+      <li><a href="#scopes">Permissions we request</a></li>
+      <li><a href="#storage">Storage &amp; retention</a></li>
+      <li><a href="#third-parties">Third parties</a></li>
+      <li><a href="#not">What this app does not do</a></li>
+      <li><a href="#control">Your control</a></li>
+      <li><a href="#changes">Changes to this policy</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ol>
+  </nav>
+
+  <main>
+    <p class="lede">
+      Bulk Attach uploads your files directly to your own Jira site.
+      <em>We never see them.</em> This page explains exactly what the app
+      touches, in plain terms, matched line-for-line to the code that ships.
+    </p>
+
+    <div class="flow-figure" id="flow">
+      <span class="node you">Your browser</span>
+      <span class="arrow">&rarr;</span>
+      <span class="node">Atlassian Forge bridge</span>
+      <span class="arrow">&rarr;</span>
+      <span class="node">Jira Cloud REST API</span>
+      <span class="arrow">&rarr;</span>
+      <span class="node you">Your Jira site</span>
+    </div>
+
+    <section>
+      <h2><span class="num">01</span>Where your files go</h2>
+      <p>
+        When you select a file to attach, it travels from your browser to
+        Atlassian's own Forge platform, then to the Jira REST API, then onto
+        the Jira issue you targeted &mdash; on your own site. There is no
+        server operated by us anywhere in that path. The app's backend
+        function set is empty: it does not exist in the deployed app at all,
+        which we verified by removing it, redeploying, and confirming a real
+        upload still completed successfully.
+      </p>
+      <p>
+        This is not a policy promise layered on top of a different
+        architecture &mdash; it is a description of the only architecture
+        that exists.
+      </p>
+    </section>
+
+    <section>
+      <h2><span class="num">02</span>What we collect</h2>
+      <p>Nothing. There is no analytics library, no telemetry call, and no
+      logging endpoint in this app that sends data anywhere. We do not know
+      which files you upload, how many, their names, or their contents.
+      We do not know which Jira issues you use the app on.</p>
+    </section>
+
+    <section id="scopes">
+      <h2><span class="num">03</span>Permissions we request</h2>
+      <p>The app asks for two Jira scopes at install. Both are used only to
+      act as you &mdash; the currently signed-in user &mdash; never with any
+      elevated or administrative access.</p>
+      <table class="scope-table">
+        <thead>
+          <tr><th>Scope</th><th>What it's used for</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>read:jira-work</code></td>
+            <td>Reading issues, projects, statuses, and issue types so you
+            can browse and search what to attach to.</td>
+          </tr>
+          <tr>
+            <td><code>write:jira-work</code></td>
+            <td>The single write operation the app performs &mdash;
+            <code>POST /issue/{key}/attachments</code> &mdash; plus removing
+            an attachment the app itself just created, if you use Undo.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="storage">
+      <h2><span class="num">04</span>Storage &amp; retention</h2>
+      <p>We retain nothing, because nothing passes through infrastructure we
+      control. Forge Storage is not used by this app for file content or
+      metadata. The only place your upload history exists is inside your own
+      Jira site's attachment records, governed by your own Jira
+      administrator's retention settings &mdash; not by us.</p>
+    </section>
+
+    <section id="third-parties">
+      <h2><span class="num">05</span>Third parties</h2>
+      <p>None. No analytics platform, no error-tracking service, no
+      third-party API of any kind is called by this app. The only network
+      calls it makes are to Atlassian's own Jira REST API, via Atlassian's
+      own Forge bridge.</p>
+    </section>
+
+    <section id="not">
+      <h2><span class="num">06</span>What this app does not do</h2>
+      <div class="not-list">
+        <p>To be unambiguous, Bulk Attach does not:</p>
+        <ul>
+          <li>Operate a server that your files pass through</li>
+          <li>Store file content in Forge Storage or anywhere else we control</li>
+          <li>Log file contents, filenames, or FormData bodies</li>
+          <li>Delete attachments it did not itself just create</li>
+          <li>Read or export data from your Jira site beyond what's shown to you in the app</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="control">
+      <h2><span class="num">07</span>Your control</h2>
+      <p>Uninstalling the app (Jira &rarr; Apps &rarr; Manage apps) removes
+      its access immediately. Attachments it already created remain on your
+      issues as ordinary Jira attachments &mdash; indistinguishable from any
+      other &mdash; governed entirely by your Jira site from that point on.
+      "Undo This Batch," used before uninstalling, removes exactly the
+      attachments a completed batch created, identified by their exact
+      Jira-assigned IDs, and nothing else.</p>
+    </section>
+
+    <section id="changes">
+      <h2><span class="num">08</span>Changes to this policy</h2>
+      <p>This is a beta-stage policy. If the app's architecture changes in a
+      way that affects any statement above, this page will be updated to
+      match before that change ships &mdash; not after.</p>
+    </section>
+
+    <section id="contact">
+      <h2><span class="num">09</span>Contact</h2>
+      <p>Questions about this policy or how the app handles your data:
+      <a href="mailto:abuzarmirza918@gmail.com">abuzarmirza918@gmail.com</a>.</p>
+    </section>
+  </main>
+
+  <footer>
+    <span>Abuzar Arif Dev &middot; Bulk Attach for Jira</span>
+    <span><a href="mailto:abuzarmirza918@gmail.com">abuzarmirza918@gmail.com</a></span>
+  </footer>
+</div>
+</body></html>
