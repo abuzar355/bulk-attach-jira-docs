@@ -1,0 +1,256 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bulk Attachment Upload Support SLA</title>
+<style>
+  :root {
+    --paper: #fbfaf7;
+    --paper-raised: #ffffff;
+    --ink: #1b2430;
+    --ink-soft: #5b6472;
+    --line: #e1e4e8;
+    --accent: #0c66e4;
+    --accent-soft: #e9f2ff;
+    --good: #216e4e;
+    --good-soft: #dcfff1;
+  }
+  :root:not([data-theme="light"]) {
+    @media (prefers-color-scheme: dark) {
+      --paper: #14181f;
+      --paper-raised: #1a1f28;
+      --ink: #e6e9ee;
+      --ink-soft: #9aa4b2;
+      --line: #2a303c;
+      --accent: #5b9dff;
+      --accent-soft: #17263d;
+      --good: #6ee7b7;
+      --good-soft: #0f2e24;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #14181f;
+    --paper-raised: #1a1f28;
+    --ink: #e6e9ee;
+    --ink-soft: #9aa4b2;
+    --line: #2a303c;
+    --accent: #5b9dff;
+    --accent-soft: #17263d;
+    --good: #6ee7b7;
+    --good-soft: #0f2e24;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Source Sans 3", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 56px 28px 96px;
+    display: grid;
+    grid-template-columns: 220px minmax(0, 700px);
+    gap: 64px;
+  }
+  @media (max-width: 880px) {
+    .wrap { grid-template-columns: 1fr; gap: 32px; padding: 32px 20px 72px; }
+    nav.toc { display: none; }
+  }
+
+  header.masthead {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    padding-bottom: 28px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid var(--line);
+  }
+  .brand { display: flex; align-items: baseline; gap: 10px; }
+  .brand .mark { font-family: "Fraunces", Georgia, serif; font-weight: 600; font-size: 20px; }
+  .brand .mark .dot { color: var(--accent); }
+  .brand .sub { color: var(--ink-soft); font-size: 13px; }
+  .meta { font-size: 13px; color: var(--ink-soft); text-align: right; line-height: 1.5; }
+  .meta strong { color: var(--ink); font-weight: 600; }
+
+  nav.toc { position: sticky; top: 40px; align-self: start; font-size: 13.5px; }
+  nav.toc .toc-label {
+    text-transform: uppercase; letter-spacing: 0.08em; font-size: 11px;
+    color: var(--ink-soft); margin-bottom: 12px; font-weight: 600;
+  }
+  nav.toc ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 9px; counter-reset: toc; }
+  nav.toc li { counter-increment: toc; }
+  nav.toc a { color: var(--ink-soft); text-decoration: none; display: flex; gap: 8px; }
+  nav.toc a:hover { color: var(--accent); }
+  nav.toc a::before {
+    content: counter(toc); font-variant-numeric: tabular-nums;
+    color: var(--line); font-weight: 600; min-width: 1.2em;
+  }
+  nav.toc a:hover::before { color: var(--accent); }
+
+  main { min-width: 0; }
+
+  .lede {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 24px; font-weight: 500; line-height: 1.45;
+    text-wrap: balance; color: var(--ink); margin: 0 0 28px;
+  }
+
+  .status-banner {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    background: var(--good-soft);
+    border: 1px solid var(--good);
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin-bottom: 40px;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .status-banner .tag {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    background: var(--good);
+    color: var(--paper);
+    padding: 3px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  section { margin-bottom: 36px; scroll-margin-top: 32px; }
+  section h2 {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 19px; font-weight: 600; margin: 0 0 14px;
+    display: flex; align-items: baseline; gap: 10px;
+  }
+  section h2 .num {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 13px; color: var(--accent); font-weight: 500;
+  }
+  section p, section li { font-size: 15.5px; line-height: 1.7; color: var(--ink); max-width: 66ch; }
+  section p + p { margin-top: 12px; }
+  section ul { margin: 10px 0; padding-left: 0; list-style: none; }
+  section ul li { position: relative; padding-left: 20px; margin-bottom: 8px; }
+  section ul li::before {
+    content: ""; position: absolute; left: 0; top: 9px;
+    width: 6px; height: 6px; border-radius: 50%; background: var(--accent);
+  }
+
+  table { border-collapse: collapse; width: 100%; margin: 14px 0 6px; font-size: 14.5px; }
+  th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); }
+  th { color: var(--ink-soft); font-weight: 600; font-size: 12.5px; text-transform: uppercase; letter-spacing: 0.04em; }
+
+  code {
+    font-family: "JetBrains Mono", ui-monospace, Consolas, monospace;
+    background: var(--accent-soft); color: var(--accent);
+    padding: 1px 6px; border-radius: 4px; font-size: 0.9em;
+  }
+
+  footer {
+    grid-column: 1 / -1;
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    font-size: 13px;
+    color: var(--ink-soft);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+</style>
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Source+Sans+3:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
+
+<div class="wrap">
+  <header class="masthead">
+    <div class="brand">
+      <span class="mark">Bulk Attachment Upload<span class="dot">.</span></span>
+      <span class="sub">for Jira</span>
+    </div>
+    <div class="meta">
+      <div><strong>Support SLA &amp; Hours of Operation</strong></div>
+      <div>Effective 2026-09-07 &middot; v3.1.0</div>
+    </div>
+  </header>
+
+  <nav class="toc" aria-label="Table of contents">
+    <div class="toc-label">On this page</div>
+    <ol>
+      <li><a href="#hours">Hours of operation</a></li>
+      <li><a href="#response-times">Response times</a></li>
+      <li><a href="#channels">Support channels</a></li>
+      <li><a href="#priority">Severity &amp; priority</a></li>
+    </ol>
+  </nav>
+
+  <main>
+    <p class="lede">
+      Bulk Attachment Upload for Jira is built and supported by a solo
+      developer. Here's exactly when and how fast you can expect a reply.
+    </p>
+
+    <div class="status-banner">
+      <span class="tag">Support live</span>
+      <div>
+        Support requests can be raised any time through the public
+        <a href="https://abuzarmirza918.atlassian.net/servicedesk/customer/portals" target="_blank" rel="noopener">Jira Service Management portal</a>
+        or by email at <a href="mailto:support@abuzararif.xyz">support@abuzararif.xyz</a>.
+      </div>
+    </div>
+
+    <section id="hours">
+      <h2><span class="num">01</span>Hours of operation</h2>
+      <p>Support is monitored <strong>Monday through Friday, 09:00&ndash;18:00
+      Pakistan Standard Time (UTC+5)</strong>, excluding local public
+      holidays. Requests submitted outside these hours are picked up the
+      next business day.</p>
+    </section>
+
+    <section id="response-times">
+      <h2><span class="num">02</span>Response times</h2>
+      <table>
+        <tr><th>Severity</th><th>First response</th><th>Target resolution</th></tr>
+        <tr><td>Critical &mdash; app unusable / data-affecting</td><td>Within 1 business day</td><td>Within 4 business days</td></tr>
+        <tr><td>High &mdash; major feature broken</td><td>Within 2 business days</td><td>Within 7 business days</td></tr>
+        <tr><td>Normal &mdash; general question, minor bug</td><td>Within 3 business days</td><td>Best effort</td></tr>
+      </table>
+      <p>These are target response times, not a contractual guarantee of a
+      specific outcome or fix timeline &mdash; every report is read and
+      triaged personally.</p>
+    </section>
+
+    <section id="channels">
+      <h2><span class="num">03</span>Support channels</h2>
+      <ul>
+        <li><a href="https://abuzarmirza918.atlassian.net/servicedesk/customer/portals" target="_blank" rel="noopener">Jira Service Management portal</a> &mdash; preferred, for tracked requests</li>
+        <li>Email: <a href="mailto:support@abuzararif.xyz">support@abuzararif.xyz</a></li>
+        <li>Security issues: <a href="mailto:security@abuzararif.xyz">security@abuzararif.xyz</a> &mdash; see the <a href="./security-policy.html">Security Policy</a></li>
+      </ul>
+    </section>
+
+    <section id="priority">
+      <h2><span class="num">04</span>Severity &amp; priority</h2>
+      <p>Severity is assessed on first response based on impact described in
+      the request. Paid-tier customers and issues affecting attachment
+      uploads or data integrity are prioritized first.</p>
+    </section>
+  </main>
+
+  <footer>
+    <span>Abuzar Arif Dev &middot; Bulk Attachment Upload for Jira</span>
+    <span><a href="mailto:support@abuzararif.xyz">support@abuzararif.xyz</a></span>
+  </footer>
+</div>
+</body></html>
